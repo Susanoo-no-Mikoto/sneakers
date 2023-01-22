@@ -14,18 +14,21 @@ function App() {
   const [favorites, setFavorites] = React.useState([]);
   const [searchValue, setSearchValue] = React.useState('');
   const [cartOpened, setCartOpened] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    //'https://63c6bf91d307b7696740204e.mockapi.io/items'
-    axios.get('http://localhost:3001/items').then((res) => {
-      setItems(res.data);
-    });
-    axios.get('http://localhost:3001/cart').then((res) => {
-      setCartItems(res.data);
-    });
-    axios.get('http://localhost:3001/favorites').then((res) => {
-      setFavorites(res.data);
-    });
+    async function fethData() {
+      const cartRespones = await axios.get('http://localhost:3001/cart');
+      const favoritesRespones = await axios.get('http://localhost:3001/favorites');
+      const itemsRespones = await axios.get('http://localhost:3001/items');
+
+      setIsLoading(false);
+
+      setCartItems(cartRespones.data);
+      setFavorites(favoritesRespones.data);
+      setItems(itemsRespones.data);
+    }
+    fethData();
   }, []);
 
   const onAddToCart = async (obj) => {
@@ -78,11 +81,13 @@ function App() {
           element={
             <Home
               items={items}
+              cartItems={cartItems}
               searchValue={searchValue}
               setSearchValue={setSearchValue}
               onChangeSearchInput={onChangeSearchInput}
               onAddToFavorite={onAddToFavorite}
               onAddToCart={onAddToCart}
+              isLoading={isLoading}
             />
           }></Route>
 
@@ -91,6 +96,7 @@ function App() {
           element={
             <Favorites
               items={favorites}
+              cartItems={cartItems}
               searchValue={searchValue}
               setSearchValue={setSearchValue}
               onChangeSearchInput={onChangeSearchInput}

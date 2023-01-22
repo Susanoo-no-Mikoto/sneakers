@@ -3,6 +3,7 @@ import Card from '../components/Card';
 function Favorites({
   items,
   searchValue,
+  cartItems,
   setSearchValue,
   onChangeSearchInput,
   onAddToCart,
@@ -37,6 +38,7 @@ function Favorites({
               price={item.price}
               imageUrl={item.imageUrl}
               favorited={true}
+              added={cartItems.some((obj) => obj.id === item.id)}
               onFavorite={(obj) => onAddToFavorite(obj)}
               onPlus={(obj) => onAddToCart(obj)}
             />
