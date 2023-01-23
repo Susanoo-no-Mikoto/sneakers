@@ -1,8 +1,8 @@
+import React from 'react';
 import Card from '../components/Card';
 
 function Home({
   items,
-  cartItems,
   searchValue,
   setSearchValue,
   onChangeSearchInput,
@@ -17,11 +17,6 @@ function Home({
     return (isLoading ? [...Array(12)] : filtredItems).map((item, index) => (
       <Card
         key={index}
-        // id={item.id}
-        // title={item.title}
-        // price={item.price}
-        // imageUrl={item.imageUrl}
-        added={cartItems.some((obj) => obj.id === item.id)}
         loading={isLoading}
         onFavorite={(obj) => onAddToFavorite(obj)}
         onPlus={(obj) => onAddToCart(obj)}

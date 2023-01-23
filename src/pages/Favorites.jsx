@@ -1,9 +1,9 @@
+import React from 'react';
 import Card from '../components/Card';
 
 function Favorites({
-  items,
+  favorites,
   searchValue,
-  cartItems,
   setSearchValue,
   onChangeSearchInput,
   onAddToCart,
@@ -28,7 +28,7 @@ function Favorites({
       </div>
 
       <div className="wrapperCard">
-        {items
+        {favorites
           .filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase()))
           .map((item, index) => (
             <Card
@@ -37,8 +37,6 @@ function Favorites({
               title={item.title}
               price={item.price}
               imageUrl={item.imageUrl}
-              favorited={true}
-              added={cartItems.some((obj) => obj.id === item.id)}
               onFavorite={(obj) => onAddToFavorite(obj)}
               onPlus={(obj) => onAddToCart(obj)}
             />
