@@ -52,6 +52,11 @@ header {
     width: 245px;
     margin-top: 20px;
 
+    &:disabled {
+      background: #bebebe !important;
+      cursor: default;
+    }
+
     &:hover {
       img {
         transform: rotate(180deg) translateX(3px);

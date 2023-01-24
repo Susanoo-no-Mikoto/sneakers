@@ -79,24 +79,6 @@
       "title": "Мужские Кроссовки Jordan Air Jordan 11",
       "imageUrl": "/img/sneakers/7.jpg",
       "price": "10 799 руб."
-    },
-    {
-      "id": 11,
-      "title": "Кроссовки Puma X Aka Boku Future Rider",
-      "imageUrl": "/img/sneakers/11.png",
-      "price": "8 999 руб."
-    },
-    {
-      "id": 12,
-      "title": "Мужские Кроссовки Nike Kyrie Flytrap IV",
-      "imageUrl": "/img/sneakers/12.jpg",
-      "price": "11 299 руб."
-    },
-    {
-      "id": 9,
-      "title": "Мужские Кроссовки Nike Lebron XVIII Low",
-      "imageUrl": "/img/sneakers/9.jpg",
-      "price": "13 999 руб."
     }
   ],
   "favorites": [
@@ -123,6 +105,42 @@
       "title": "Мужские Кроссовки Jordan Air Jordan 11",
       "imageUrl": "/img/sneakers/7.jpg",
       "price": "10 799 руб."
+    }
+  ],
+  "orders": [
+    {
+      "items": [
+        {
+          "id": 7,
+          "title": "Мужские Кроссовки Jordan Air Jordan 11",
+          "imageUrl": "/img/sneakers/7.jpg",
+          "price": "10 799 руб."
+        },
+        {
+          "id": 6,
+          "title": "Мужские Кроссовки Nike Kyrie 7",
+          "imageUrl": "/img/sneakers/6.jpg",
+          "price": "11 299 руб."
+        }
+      ],
+      "id": 1
+    },
+    {
+      "items": [
+        {
+          "id": 6,
+          "title": "Мужские Кроссовки Nike Kyrie 7",
+          "imageUrl": "/img/sneakers/6.jpg",
+          "price": "11 299 руб."
+        },
+        {
+          "id": 7,
+          "title": "Мужские Кроссовки Jordan Air Jordan 11",
+          "imageUrl": "/img/sneakers/7.jpg",
+          "price": "10 799 руб."
+        }
+      ],
+      "id": 2
     }
   ]
 }
