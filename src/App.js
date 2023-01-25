@@ -7,6 +7,7 @@ import Drawer from './components/Drawer';
 
 import Home from './pages/Home';
 import Favorites from './pages/Favorites';
+import Orders from './pages/Orders';
 
 export const AppContext = React.createContext({});
 
@@ -17,17 +18,20 @@ function App() {
   const [searchValue, setSearchValue] = React.useState('');
   const [cartOpened, setCartOpened] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [orders, setOrders] = React.useState([]);
 
   React.useEffect(() => {
     async function fethData() {
       const cartRespones = await axios.get('http://localhost:3001/cart');
       const favoritesRespones = await axios.get('http://localhost:3001/favorites');
       const itemsRespones = await axios.get('http://localhost:3001/items');
+      const dataOrders = await axios.get('http://localhost:3001/orders');
 
       setIsLoading(false);
 
       setCartItems(cartRespones.data);
       setFavorites(favoritesRespones.data);
+      setOrders(dataOrders.data);
       setItems(itemsRespones.data);
     }
     fethData();
@@ -80,7 +84,14 @@ function App() {
 
   return (
     <AppContext.Provider
-      value={{ items, cartItems, isItemAdded, isItemFavorite, setCartOpened, setCartItems }}>
+      value={{
+        items,
+        cartItems,
+        isItemAdded,
+        isItemFavorite,
+        setCartOpened,
+        setCartItems,
+      }}>
       <div className="wrapper clear">
         {cartOpened && (
           <Drawer items={cartItems} onClose={() => setCartOpened(false)} onRemove={onRemoveItem} />
@@ -114,6 +125,8 @@ function App() {
                 onAddToCart={onAddToCart}
               />
             }></Route>
+
+          <Route path="/orders" element={<Orders orders={orders} />}></Route>
         </Routes>
       </div>
     </AppContext.Provider>
