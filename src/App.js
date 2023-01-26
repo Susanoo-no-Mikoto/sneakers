@@ -18,55 +18,65 @@ function App() {
   const [searchValue, setSearchValue] = React.useState('');
   const [cartOpened, setCartOpened] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [orders, setOrders] = React.useState([]);
 
   React.useEffect(() => {
-    async function fethData() {
-      const cartRespones = await axios.get('http://localhost:3001/cart');
-      const favoritesRespones = await axios.get('http://localhost:3001/favorites');
-      const itemsRespones = await axios.get('http://localhost:3001/items');
-      const dataOrders = await axios.get('http://localhost:3001/orders');
+    (async () => {
+      try {
+        const [cartRespones, favoritesRespones, itemsRespones] = await Promise.all([
+          axios.get('http://localhost:3001/cart'),
+          axios.get('http://localhost:3001/favorites'),
+          axios.get('http://localhost:3001/items'),
+        ]);
 
-      setIsLoading(false);
+        setIsLoading(false);
 
-      setCartItems(cartRespones.data);
-      setFavorites(favoritesRespones.data);
-      setOrders(dataOrders.data);
-      setItems(itemsRespones.data);
-    }
-    fethData();
+        setCartItems(cartRespones.data);
+        setFavorites(favoritesRespones.data);
+        setItems(itemsRespones.data);
+      } catch (error) {
+        alert('Ошибка загрузки данных');
+        console.error(error);
+      }
+    })();
   }, []);
 
   const onAddToCart = async (obj) => {
     try {
       if (cartItems.find((favObj) => favObj.id === obj.id)) {
-        axios.delete(`http://localhost:3001/cart/${obj.id}`);
         setCartItems((prev) => prev.filter((item) => item.id !== obj.id));
+        await axios.delete(`http://localhost:3001/cart/${obj.id}`);
       } else {
-        const { data } = await axios.post('http://localhost:3001/cart', obj);
-        setCartItems((prev) => [...prev, data]);
+        setCartItems((prev) => [...prev, obj]);
+        await axios.post('http://localhost:3001/cart', obj);
       }
     } catch (error) {
       alert('Не удалось добавить товар в корзину');
+      console.error(error);
     }
   };
 
-  const onRemoveItem = (id) => {
-    axios.delete(`http://localhost:3001/cart/${id}`);
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  const onRemoveItem = async (id) => {
+    try {
+      setCartItems((prev) => prev.filter((item) => item.id !== id));
+      await axios.delete(`http://localhost:3001/cart/${id}`);
+    } catch (error) {
+      alert('Не удалось удалить товар из корзины!');
+      console.error(error);
+    }
   };
 
   const onAddToFavorite = async (obj) => {
     try {
       if (favorites.find((favObj) => favObj.id === obj.id)) {
-        axios.delete(`http://localhost:3001/favorites/${obj.id}`);
         setFavorites((prev) => prev.filter((item) => item.id !== obj.id));
+        await axios.delete(`http://localhost:3001/favorites/${obj.id}`);
       } else {
-        const { data } = await axios.post(`http://localhost:3001/favorites`, obj);
-        setFavorites((prev) => [...prev, data]);
+        setFavorites((prev) => [...prev, obj]);
+        await axios.post(`http://localhost:3001/favorites`, obj);
       }
     } catch (error) {
       alert('Не удалост добавить в закладки');
+      console.error(error);
     }
   };
 
@@ -93,9 +103,13 @@ function App() {
         setCartItems,
       }}>
       <div className="wrapper clear">
-        {cartOpened && (
-          <Drawer items={cartItems} onClose={() => setCartOpened(false)} onRemove={onRemoveItem} />
-        )}
+        <Drawer
+          items={cartItems}
+          onClose={() => setCartOpened(false)}
+          onRemove={onRemoveItem}
+          opened={cartOpened}
+        />
+
         <Header onClickCart={() => setCartOpened(true)} />
 
         <Routes>
@@ -126,7 +140,7 @@ function App() {
               />
             }></Route>
 
-          <Route path="/orders" element={<Orders orders={orders} />}></Route>
+          <Route path="/orders" element={<Orders isLoading={isLoading} />}></Route>
         </Routes>
       </div>
     </AppContext.Provider>
