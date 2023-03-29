@@ -1,9 +1,31 @@
 import React from 'react';
-import { AppContext } from '../../App';
 import ContentLoader from 'react-content-loader';
+
+import { AppContext, Item } from '../../App';
+
 import styles from './Card.module.scss';
 
-function Card({ onFavorite, id, imageUrl, title, price, onPlus, favorited, loading = false }) {
+type CardProps = {
+  id: number;
+  imageUrl: string;
+  title: string;
+  price: string;
+  favorited: boolean;
+  loading?: boolean;
+  onPlus: (obj: Item) => Promise<void>;
+  onFavorite: (obj: Item) => Promise<void>;
+};
+
+const Card: React.FC<CardProps> = ({
+  id,
+  imageUrl,
+  title,
+  price,
+  favorited = true,
+  loading = false,
+  onPlus,
+  onFavorite,
+}) => {
   const { isItemAdded, isItemFavorite } = React.useContext(AppContext);
   const [isFavorite, setIsFavorite] = React.useState(favorited);
 
@@ -62,6 +84,6 @@ function Card({ onFavorite, id, imageUrl, title, price, onPlus, favorited, loadi
       )}
     </div>
   );
-}
+};
 
 export default Card;

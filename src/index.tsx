@@ -5,8 +5,7 @@ import './index.scss';
 import App from './App';
 import 'macro-css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <BrowserRouter>
     <App />
   </BrowserRouter>,

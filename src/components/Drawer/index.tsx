@@ -1,27 +1,37 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import axios from 'axios';
 
 import Info from '../Info';
 import { useCart } from '../../hooks/useCart';
+import { Item } from '../../App';
 
 import styles from './Drawer.module.scss';
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+type DrawerProps = {
+  onClose: MouseEventHandler;
+  items: Item[];
+  onRemove: (id: number) => Promise<void>;
+  opened: boolean;
+};
 
-function Drawer({ onClose, items = [], onRemove, opened }) {
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const Drawer: React.FC<DrawerProps> = ({ onClose, items = [], onRemove, opened }) => {
   const { cartItems, setCartItems, totalPrice } = useCart();
-  const [orderId, setOrderId] = React.useState(null);
-  const [isOrderComplite, setIsOrderComplite] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [orderId, setOrderId] = React.useState<number[]>();
+  const [isOrderComplite, setIsOrderComplite] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const onClickOrder = async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.post('http://localhost:3001/orders', { items: cartItems });
+      const { data } = await axios.post('https://json-server-delta-sable.vercel.app/api/orders', {
+        items: cartItems,
+      });
       setOrderId(data.id);
       for (let i = 0; i < cartItems.length; i++) {
         const item = cartItems[i];
-        await axios.delete(`http://localhost:3001/cart/${item.id}`);
+        await axios.delete(`https://json-server-delta-sable.vercel.app/api/cart/${item.id}`);
         await delay(700);
       }
 
@@ -106,6 +116,6 @@ function Drawer({ onClose, items = [], onRemove, opened }) {
       </div>
     </div>
   );
-}
+};
 
 export default Drawer;

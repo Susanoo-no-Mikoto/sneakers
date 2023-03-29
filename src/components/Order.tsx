@@ -1,8 +1,14 @@
-import React from 'react';
+import { FC } from 'react';
 
-import Card from '../components/Card';
+import Card from './Card';
+import { Item } from '../App';
 
-function Order({ items, isLoading }) {
+type OrderProps = {
+  items: Item[];
+  isLoading: boolean;
+};
+
+const Order: FC<OrderProps> = ({ items, isLoading }) => {
   const renderItems = () => {
     return (isLoading ? [...Array(4)] : items).map((item, index) => (
       <Card key={index} loading={isLoading} {...item} />
@@ -10,6 +16,6 @@ function Order({ items, isLoading }) {
   };
 
   return <div className="wrapperCard">{renderItems()}</div>;
-}
+};
 
 export default Order;

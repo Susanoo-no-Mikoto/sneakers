@@ -2,14 +2,23 @@ import React from 'react';
 import axios from 'axios';
 
 import Order from '../components/Order';
+import { Item } from '../App';
 
-function Orders({ isLoading }) {
-  const [orders, setOrders] = React.useState([]);
+type OrderProps = {
+  isLoading: boolean;
+};
+type OrderType = {
+  items: Item[];
+  id: number;
+};
+
+const Orders: React.FC<OrderProps> = ({ isLoading }) => {
+  const [orders, setOrders] = React.useState<OrderType[]>([]);
 
   React.useEffect(() => {
     (async () => {
       try {
-        const dataOrders = await axios.get('http://localhost:3001/orders');
+        const dataOrders = await axios.get('https://json-server-delta-sable.vercel.app/api/orders');
         setOrders(dataOrders.data);
       } catch (error) {
         alert('Ошибка при запросе заказов');
@@ -34,6 +43,6 @@ function Orders({ isLoading }) {
       </div>
     </div>
   );
-}
+};
 
 export default Orders;

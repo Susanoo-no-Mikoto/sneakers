@@ -1,9 +1,9 @@
-import React from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useCart } from '../hooks/useCart';
 
-function Header(props) {
+const Header: FC<any> = ({ onClickCart }) => {
   const { totalPrice } = useCart();
 
   return (
@@ -18,7 +18,7 @@ function Header(props) {
         </div>
       </Link>
       <ul className="d-flex">
-        <li className="mr-30 cu-p" onClick={props.onClickCart}>
+        <li className="mr-30 cu-p" onClick={onClickCart}>
           <img width={18} height={18} className="mr-15 mt-10" src="img/cart.svg" alt="Cart" />
           <span>{totalPrice} руб.</span>
         </li>
@@ -35,6 +35,6 @@ function Header(props) {
       </ul>
     </header>
   );
-}
+};
 
 export default Header;

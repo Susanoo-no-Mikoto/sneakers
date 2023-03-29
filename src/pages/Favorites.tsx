@@ -1,14 +1,23 @@
-import React from 'react';
 import Card from '../components/Card';
+import { Item } from '../App';
 
-function Favorites({
+type FavoritesProps = {
+  favorites: Item[];
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  onChangeSearchInput: (event: any) => void;
+  onAddToCart: (obj: Item) => Promise<void>;
+  onAddToFavorite: (obj: Item) => Promise<void>;
+};
+
+const Favorites = ({
   favorites,
   searchValue,
   setSearchValue,
   onChangeSearchInput,
   onAddToCart,
   onAddToFavorite,
-}) {
+}: FavoritesProps) => {
   return (
     <div className="content p-40">
       <div className="d-flex align-center justify-between mb-40">
@@ -33,17 +42,15 @@ function Favorites({
           .map((item, index) => (
             <Card
               key={index}
-              id={item.id}
-              title={item.title}
-              price={item.price}
-              imageUrl={item.imageUrl}
               onFavorite={(obj) => onAddToFavorite(obj)}
               onPlus={(obj) => onAddToCart(obj)}
+              favorited
+              {...item}
             />
           ))}
       </div>
     </div>
   );
-}
+};
 
 export default Favorites;

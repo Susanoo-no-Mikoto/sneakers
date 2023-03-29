@@ -1,15 +1,25 @@
-import React from 'react';
 import Card from '../components/Card';
+import { Item } from '../App';
 
-function Home({
+type HomeProps = {
+  items: Item[];
+  searchValue: string;
+  setSearchValue: (value: React.SetStateAction<string>) => void;
+  onChangeSearchInput: (event: any) => void;
+  onAddToFavorite: (obj: Item) => Promise<void>;
+  onAddToCart: (obj: Item) => Promise<void>;
+  isLoading: boolean;
+};
+
+const Home = ({
   items,
   searchValue,
+  isLoading,
   setSearchValue,
   onChangeSearchInput,
   onAddToFavorite,
   onAddToCart,
-  isLoading,
-}) {
+}: HomeProps) => {
   const renderItems = () => {
     const filtredItems = items.filter((item) =>
       item.title.toLowerCase().includes(searchValue.toLowerCase()),
@@ -45,6 +55,6 @@ function Home({
       <div className="wrapperCard">{renderItems()}</div>
     </div>
   );
-}
+};
 
 export default Home;
